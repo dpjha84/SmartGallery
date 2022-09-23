@@ -5,6 +5,7 @@ using Microsoft.ML;
 using ImageClassification.ImageDataStructures;
 using static ImageClassification.ModelScorer.ConsoleHelpers;
 using static ImageClassification.ModelScorer.ModelHelpers;
+using System.IO;
 
 namespace ImageClassification.ModelScorer
 {
@@ -46,12 +47,12 @@ namespace ImageClassification.ModelScorer
             public const string outputTensorName = "softmax2";
         }
 
-        public void Score()
+        public IEnumerable<ImageNetDataProbability> Score()
         {
             var model = LoadModel(dataLocation, imagesFolder, modelLocation);
 
             var predictions = PredictDataUsingModel(dataLocation, imagesFolder, labelsLocation, model).ToArray();
-
+            return predictions;
         }
 
         private PredictionEngine<ImageNetData, ImageNetPrediction> LoadModel(string dataLocation, string imagesFolder, string modelLocation)
@@ -78,7 +79,7 @@ namespace ImageClassification.ModelScorer
             return predictionEngine;
         }
 
-        protected IEnumerable<ImageNetData> PredictDataUsingModel(string testLocation, 
+        protected IEnumerable<ImageNetDataProbability> PredictDataUsingModel(string testLocation, 
                                                                   string imagesFolder, 
                                                                   string labelsLocation, 
                                                                   PredictionEngine<ImageNetData, ImageNetPrediction> model)
@@ -92,7 +93,15 @@ namespace ImageClassification.ModelScorer
 
             var testData = ImageNetData.ReadFromCsv(testLocation, imagesFolder);
 
-            foreach (var sample in testData)
+            string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
+            var files = Directory.GetFiles(imagesFolder, "*.*", SearchOption.AllDirectories).Where(s => supportedExtensions.Contains(System.IO.Path.GetExtension(s).ToLower()));
+            var testData1 = new List<ImageNetData>();
+            foreach (var file in files)
+            {
+                testData1.Add(new ImageNetData {ImagePath = file, Label = ""});
+            }
+
+            foreach (var sample in testData1)
             {
                 var probs = model.Predict(sample).PredictedLabels;
                 var imageData = new ImageNetDataProbability()

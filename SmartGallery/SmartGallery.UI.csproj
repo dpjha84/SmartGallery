@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DeepLearning_ImageClassification_TensorFlow\ImageClassification\ImageClassification.Score.csproj" />
+    <ProjectReference Include="..\ImageClassification\ImageClassification.Score.csproj" />
   </ItemGroup>
 
   <ItemGroup>

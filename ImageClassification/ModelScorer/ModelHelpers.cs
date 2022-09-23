@@ -7,7 +7,7 @@ namespace ImageClassification.ModelScorer
 {
     public static class ModelHelpers
     {
-        static FileInfo _dataRoot = new FileInfo(typeof(Program).Assembly.Location);
+        static FileInfo _dataRoot = new FileInfo(typeof(Predictor).Assembly.Location);
 
         public static string GetAssetsPath(params string[] paths)
         {
