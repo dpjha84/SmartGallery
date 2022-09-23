@@ -84,14 +84,14 @@ namespace ImageClassification.ModelScorer
                                                                   string labelsLocation, 
                                                                   PredictionEngine<ImageNetData, ImageNetPrediction> model)
         {
-            ConsoleWriteHeader("Classify images");
-            Console.WriteLine($"Images folder: {imagesFolder}");
-            Console.WriteLine($"Training file: {testLocation}");
-            Console.WriteLine($"Labels file: {labelsLocation}");
+            //ConsoleWriteHeader("Classify images");
+            //Console.WriteLine($"Images folder: {imagesFolder}");
+            //Console.WriteLine($"Training file: {testLocation}");
+            //Console.WriteLine($"Labels file: {labelsLocation}");
 
             var labels = ModelHelpers.ReadLabels(labelsLocation);
 
-            var testData = ImageNetData.ReadFromCsv(testLocation, imagesFolder);
+            //var testData = ImageNetData.ReadFromCsv(testLocation, imagesFolder);
 
             string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
             var files = Directory.GetFiles(imagesFolder, "*.*", SearchOption.AllDirectories).Where(s => supportedExtensions.Contains(System.IO.Path.GetExtension(s).ToLower()));
