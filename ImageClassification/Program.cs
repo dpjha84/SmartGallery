@@ -11,21 +11,21 @@ namespace ImageClassification
     {
         static void Main(string[] args)
         {
-            Predict();
+            //Predict();
         }
-        public static IEnumerable<ImageNetDataProbability> Predict()
+        public static IEnumerable<ImageNetDataProbability> Predict(string imagesFolderPath)
         {
             string assetsRelativePath = @"C:\Hack\Repos\SmartGallery\ImageClassification\assets";
             string assetsPath = GetAbsolutePath(assetsRelativePath);
 
             var tagsTsv = Path.Combine(assetsPath, "inputs", "images", "tags.tsv");
-            var imagesFolder = @"C:\Hack\DeepLearning_ImageClassification_Training\ImageClassification.Train\assets\inputs\images\flower_photos_small_set\flower_photos_small_set";// Path.Combine(assetsPath, "inputs", "images");
+            //var imagesFolder = @"C:\Hack\DeepLearning_ImageClassification_Training\ImageClassification.Train\assets\inputs\images\flower_photos_small_set\flower_photos_small_set";// Path.Combine(assetsPath, "inputs", "images");
             var inceptionPb = Path.Combine(assetsPath, "inputs", "inception", "tensorflow_inception_graph.pb");
             var labelsTxt = Path.Combine(assetsPath, "inputs", "inception", "imagenet_comp_graph_label_strings.txt");
 
             try
             {
-                var modelScorer = new TFModelScorer(tagsTsv, imagesFolder, inceptionPb, labelsTxt);
+                var modelScorer = new TFModelScorer(tagsTsv, imagesFolderPath, inceptionPb, labelsTxt);
                 var scores = modelScorer.Score();
                 return scores;
 

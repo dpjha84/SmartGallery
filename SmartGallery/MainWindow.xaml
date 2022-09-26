@@ -1,43 +1,47 @@
 ﻿<Window x:Class="SmartGallery.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" WindowState="Maximized">
+        Title="Smart Gallery" Height="350" Width="525" WindowState="Maximized">
 <Grid>
-    <ScrollViewer>
-        <StackPanel Margin="10">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="12*"/>
+    </Grid.RowDefinitions>
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="10">
+        <StackPanel Margin="10" Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Label Content="Image Folder.."/>
-                <TextBox x:Name="txtImageFolder" IsReadOnly="True" Style="{StaticResource MyWaterMarkStyle}" Height="25" Width="200" HorizontalAlignment="Left"/>
-                <TextBox x:Name="txtSearch" Style="{StaticResource MyWaterMarkStyle}" Tag="Search for a thing or people..." Height="25" Width="200" HorizontalAlignment="Left" TextChanged="txtSearch_TextChanged"/>
+                <Label Content="Images Folder.."/>
+                <TextBox x:Name="txtImageFolder" IsReadOnly="True" Style="{StaticResource MyWaterMarkStyle}" Height="25" Width="300" HorizontalAlignment="Left"/>
+                <Button x:Name="btnBrowse" Margin="5,0,0,0" Content="Browse.." Click="btnBrowse_Click"/>
+                <Button x:Name="btnLoad" Margin="5,0,0,0" Content="Load Images.." Click="btnLoad_Click"/>
+                <Label x:Name="lblProgress" Content="Processing images..." Foreground="Green"/>
+                <TextBox Margin="50,0,0,0 " x:Name="txtSearch" Style="{StaticResource MyWaterMarkStyle}" Tag="Search for a thing or people..." Height="25" Width="300" HorizontalAlignment="Left" TextChanged="txtSearch_TextChanged"/>
             </StackPanel>
-        
-    <ItemsControl Margin="20" x:Name="lb" ItemsSource="{Binding images}" ScrollViewer.HorizontalScrollBarVisibility="Visible">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Border Background="DarkGray" BorderThickness="2" MouseLeftButtonDown="Image_MouseDown">
-                    <Border.Style>
-                <Style TargetType="Border">
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="Green" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
-                <StackPanel Orientation="Vertical">
-                    <Image Source="{Binding Path}" Stretch="Uniform" Height="150" Width="150" Margin="10"/>
-                    <Label Content="{Binding PredictedLabel}"/>
-                </StackPanel>
-                    </Border>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <WrapPanel IsItemsHost="True" Orientation="Horizontal"  />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-    </ItemsControl>
-            </StackPanel>
+        </StackPanel>
+        </Border>
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" Grid.Row="1">
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl Margin="20" x:Name="lb"  ItemsSource="{Binding images}" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="LightGray" Margin="10" BorderThickness="2" CornerRadius="5" MouseLeftButtonDown="Image_MouseDown">
+                            <Border.Effect>
+                    <DropShadowEffect ShadowDepth="5" Color="Gray"/>
+                </Border.Effect>                            
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="{Binding Path}" Stretch="Uniform" Height="150" Width="150" Margin="10"/>
+                            <Label Content="{Binding PredictedLabel}"/>
+                        </StackPanel>
+                            </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" Orientation="Horizontal"  />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
         </ScrollViewer>
+    </Border>
 </Grid>
 </Window>

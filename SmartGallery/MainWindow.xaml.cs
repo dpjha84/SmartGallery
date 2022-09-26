@@ -25,28 +25,32 @@ namespace SmartGallery.UI
         Stopwatch sw = new Stopwatch();
         ImageData[] result2;
         ObservableCollection<ImageNetDataProbability> predictedImages = new ObservableCollection<ImageNetDataProbability>();
+        string imagesFolder = "C:\\Users\\divya.jha\\Pictures";
 
         public MainWindow()
         {
             InitializeComponent();
-            Process().GetAwaiter().GetResult();
-            Load();
+            imagesFolder = txtImageFolder.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            lblProgress.Content = "Processing images...";
+            Process();
         }
-        private Task Process()
+        private void Process()
         {
-            var t1 = Task.Run(() => predictions = Predictor.Predict());
+            Task.Run(() =>
+            {
+                Dispatcher.Invoke(new Action(() => lblProgress.Content = "Processing images..."));
+                predictions = Predictor.Predict(imagesFolder);
 
-            var t2 = Task.Run(() => result2 = new FaceClassification().GetImagesPredictions(@"C:\Hack\images\Humans"));
-
-            Task.WaitAll(t1, t2);
-            return Task.CompletedTask;
+                result2 = new FaceClassification().GetImagesPredictions(@"C:\Hack\images\Humans");
+                Load();
+                Dispatcher.Invoke(new Action(() => lblProgress.Content = ""));
+            });
         }
 
         private void Load()
         {
-            string root = @"C:\Hack";
-            txtImageFolder.Text = root;
-            
+            images = new ObservableCollection<ImageDetails>();
+            //Dispatcher.Invoke(new Action(() => images.Clear()));
             foreach (var file in predictions)
             {
                 ImageDetails id = new ImageDetails()
@@ -73,7 +77,9 @@ namespace SmartGallery.UI
             {
                 images.Add(new ImageDetails { Path = item.ImagePath, PredictedLabel = item.Label });
             }
-            lb.ItemsSource = images;
+            Dispatcher.Invoke(new Action(() => lb.ItemsSource = images));
+            //lb.ItemsSource = images;
+            //lb.Items.Refresh();
         }
 
         private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -96,11 +102,22 @@ namespace SmartGallery.UI
             }
         }
 
-        //private void Window_Loaded_1(object sender, RoutedEventArgs e)
-        //{
-        //    sw.Start();
-        //    Load();
-        //    MessageBox.Show(sw.Elapsed.ToString());
-        //}
+        private void btnBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+            if (dialog.ShowDialog(this).GetValueOrDefault() && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
+            {
+                imagesFolder = txtImageFolder.Text = dialog.SelectedPath;
+                //lblProgress.Content = "Processing images...";
+                //lblProgress.Content = "Processing images...";
+                //Process();
+                //lblProgress.Content = "";
+            }
+        }
+
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            Process();
+        }
     }
 }
