@@ -14,7 +14,8 @@
                 <TextBox x:Name="txtImageFolder" IsReadOnly="True" Style="{StaticResource MyWaterMarkStyle}" Height="25" Width="300" HorizontalAlignment="Left"/>
                 <Button x:Name="btnBrowse" Margin="5,0,0,0" Content="Browse.." Click="btnBrowse_Click"/>
                 <Button x:Name="btnLoad" Margin="5,0,0,0" Content="Load Images.." Click="btnLoad_Click"/>
-                <Label x:Name="lblProgress" Content="Processing images..." Foreground="Green"/>
+                <Button x:Name="btnSaveLabels" Margin="5,0,0,0" Content="Save Labels" Width="100" Click="btnSaveLabels_Click"/>
+                <Label x:Name="lblProgress" Foreground="Green"/>
                 <TextBox Margin="50,0,0,0 " x:Name="txtSearch" Style="{StaticResource MyWaterMarkStyle}" Tag="Search for a thing or people..." Height="25" Width="300" HorizontalAlignment="Left" TextChanged="txtSearch_TextChanged"/>
             </StackPanel>
         </StackPanel>
@@ -30,7 +31,9 @@
                 </Border.Effect>                            
                         <StackPanel Orientation="Vertical">
                             <Image Source="{Binding Path}" Stretch="Uniform" Height="150" Width="150" Margin="10"/>
-                            <Label Content="{Binding PredictedLabel}"/>
+                            <Label Content="{Binding PredictedLabel}" HorizontalAlignment="Center"/>
+                            <TextBox x:Name="txtCustomLabel" Margin="5" TextChanged="txtCustomLabel_TextChanged" Tag="Enter Custom Label" Style="{StaticResource MyWaterMarkStyle}" Height="25" Width="150" HorizontalAlignment="Center"/>
+                            <Button x:Name="btnTrain" Margin="5" VerticalAlignment="Center" Width="150" Content="Save" Click="btnTrain_Click"/>
                         </StackPanel>
                             </Border>
                     </DataTemplate>

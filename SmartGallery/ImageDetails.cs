@@ -43,6 +43,8 @@
         public long Size { get; set; }
 
         public string PredictedLabel { get; set; }
+
+        public string CustomLabel { get; set; }
          
     }
 }

@@ -185,7 +185,14 @@ namespace ImageClassification.Train
                 {
                     string name = Path.GetFileName(file);
                     string dest = Path.Combine(Path.Combine(destFolder, item.Key), name);
-                    File.Copy(file, dest, true);
+                    try
+                    {
+                        File.Copy(file, dest, true);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                    
                 }
             }
 

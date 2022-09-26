@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ImageClassification.Shared\ImageClassification.Shared.csproj" />
+    <ProjectReference Include="..\ImageClassification.Train\ImageClassification.Train.csproj" />
     <ProjectReference Include="..\ImageClassification\ImageClassification.Score.csproj" />
   </ItemGroup>
 
